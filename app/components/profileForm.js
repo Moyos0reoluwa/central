@@ -8,7 +8,7 @@ export default function ProfileForm() {
     surname: '',
     firstName: '',
     middleName: '',
-    profileId: '',
+    installationId: '',
     email: '',
     givingNumber: '',
     leadershipLevel: '',
@@ -19,15 +19,23 @@ export default function ProfileForm() {
     signature: null,
     dateOfBirth: '',
     installation: '',
-    department: '',
+    departments: [], // Updated to handle multiple selections
     central: ''
   };
 
   const [formData, setFormData] = useState(initialState);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, checked } = e.target;
+
+    if (name === 'departments') {
+      const updatedDepartments = checked
+        ? [...formData.departments, value]
+        : formData.departments.filter(department => department !== value);
+      setFormData({ ...formData, departments: updatedDepartments });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -75,17 +83,6 @@ export default function ProfileForm() {
             type="text"
             name="middleName"
             value={formData.middleName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700">Profile ID</label>
-          <input
-            type="text"
-            name="profileId"
-            value={formData.profileId}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded"
           />
@@ -199,27 +196,70 @@ export default function ProfileForm() {
 
         <div className="mb-4">
           <label className="block text-gray-700">Installation</label>
-          <input
-            type="text"
+          <select
             name="installation"
             value={formData.installation}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded"
-          />
+          >
+            <option value="">Select...</option>
+            <option value="Abuja">Abuja</option>
+            <option value="Chapel of Reconciliation">Chapel of Reconciliation</option>
+            <option value="Chapel of Reconciliation (Malete)">Chapel of Reconciliation (Malete)</option>
+            <option value="COHS">COHS</option>
+            <option value="FUOYE">FUOYE</option>
+            <option value="FUTA">FUTA</option>
+            <option value="Global">Global</option>
+            <option value="Gospel Empire">Gospel Empire</option>
+            <option value="HQ">HQ</option>
+            <option value="Kwara Poly">Kwara Poly</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Tanke">Tanke</option>
+            <option value="UNIABUJA">UNIABUJA</option>
+            <option value="UNIBADAN">UNIBADAN</option>
+            <option value="UNIJOS">UNIJOS</option>
+            <option value="UNILORIN">UNILORIN</option>
+          </select>
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Department</label>
-          <input
-            type="text"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
+          <label className="block text-gray-700">Departments</label>
+          <div className="flex flex-col space-y-2">
+            {[
+              'Choir',
+              'Power and Sound',
+              'Media',
+              'Decoration',
+              'Ushering',
+              'Love and Care',
+              'Zoe',
+              'Evangelism',
+              'Drama',
+              'Security and Intelligence',
+              'News',
+              'Orizon',
+              'Publisher',
+              'Children',
+              'Teens',
+
+              // Add more departments here
+            ].map(option => (
+              <label key={option} className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="departments"
+                  value={option}
+                  checked={formData.departments.includes(option)}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700">Central</label>
           <input
             type="text"
@@ -228,12 +268,28 @@ export default function ProfileForm() {
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded"
           />
+        </div> */}
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Central</label>
+          <select
+            name="central"
+            value={formData.central}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded"
+          >
+            <option value="">Select...</option>
+            <option value="Abuja">MPCD</option>
+            <option value="Chapel of Reconciliation">Evangelism</option>
+            <option value="Chapel of Reconciliation (Malete)">Airspace</option>
+            <option value="COHS">Finance</option>
+          </select>
         </div>
 
         <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
           Submit
         </button>
       </form>
-    </div>
+     </div> 
   );
 }

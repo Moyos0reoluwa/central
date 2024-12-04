@@ -21,6 +21,13 @@ export default function LandingPage() {
         >
           Go to Installation Form
         </a>
+
+        <a
+          href="departmentPage"
+          className="bg-white text-blue-500 px-6 py-3 rounded-full shadow-lg hover:bg-gray-200 transition"
+        >
+          Go to Department Form
+        </a>
         
       </div>
     </div>
